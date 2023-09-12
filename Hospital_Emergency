@@ -1,0 +1,87 @@
+CREATE DATABASE HOSPITAL_ER;
+
+USE HOSPITAL_ER;
+
+SELECT * FROM hospital_er.`hospital record`;
+
+------------------------------------------------------------
+-- EXPLORATORY DATA ANALYSIS
+------------------------------------------------------------
+
+# fIRST LETS CHECK HOW MANY TOTAL RECORD ARE THEIR-- TOTAL -9216
+SELECT COUNT(*) FROM hospital_er.`hospital record`;
+
+# LETS CHECK DISTINCT RECORD FROM THE DATA.
+SELECT COUNT(DISTINCT patient_id) AS PATIENT_COUNT FROM hospital_er.`hospital record`;
+
+# TOTAL PATIENT RECORD AS PER NAME IS - 8399
+SELECT COUNT(DISTINCT PATIENT_LAST_NAME) AS PATIENT FROM hospital_er.`hospital record`; 
+
+
+-- How many years of data do we have and percentage per year?
+SELECT YEAR(ï»¿date) AS YEAR , 
+       COUNT(*) AS COUNT, 
+       ROUND((COUNT(*)/(SELECT COUNT(*)FROM hospital_er.`hospital record`)) * 100,1) AS PERCENTAGE
+FROM hospital_er.`hospital record`
+GROUP BY YEAR;
+
+-- What day of the week has the highest number of patient visits?
+SELECT DAYNAME("ï»¿date") AS BUSIEST_WEEK ,
+COUNT(*) AS PATIENT_VISIT
+FROM hospital_er.`hospital record`
+GROUP BY BUSIEST_WEEK
+ORDER BY PATIENT_VISIT desc;
+
+
+-- What time of the day do we have the most patient visits
+SELECT HOUR(ï»¿date) AS hour_of_day, COUNT(*) AS number_of_visits
+FROM hospital_er.`hospital record`
+GROUP BY hour_of_day
+ORDER BY number_of_visits DESC;
+
+
+-- What are the unique values in our patient gender
+SELECT DISTINCT PATIENT_GENDER FROM hospital_er.`hospital record`;
+
+
+-- What is the distribution of our pateint gender
+SELECT PATIENT_GENDER,
+       COUNT(*) AS TOTAL_PATIENT,
+       ROUND((COUNT(*)/(SELECT COUNT(*) FROM hospital_er.`hospital record`))*100,1) AS PERCENTAGE
+FROM hospital_er.`hospital record`
+GROUP BY PATIENT_GENDER;
+
+-- What is the average age of patients in our data set
+SELECT avg(PATIENT_AGE) FROM hospital_er.`hospital record`; 
+
+
+-- How many race do we have in our dataset
+SELECT DISTINCT PATIENT_RACE FROM hospital_er.`hospital record`; 
+
+
+-- What is the distribution of races in our dataset
+SELECT PATIENT_RACE,
+       COUNT(*) AS TOTAL_PATIENT,
+       ROUND((COUNT(*)/(SELECT COUNT(*) FROM hospital_er.`hospital record`))*100,1) AS PERCENTAGE
+FROM hospital_er.`hospital record`
+GROUP BY PATIENT_RACE;
+
+
+-- What is the average waiting time of patients in our data set?
+SELECT AVG(PATIENT_WAITTIME) AS AVERAGE_WAITTIME FROM hospital_er.`hospital record`;
+
+
+-- What is the maximum waiting time of our patient
+SELECT MAX(PATIENT_WAITTIME) AS MAX_WAITTIME FROM hospital_er.`hospital record`; 
+
+-- What is the minimum waiting time of our patient
+SELECT MIN(PATIENT_WAITTIME) AS MIN_WAITTIME FROM hospital_er.`hospital record`; 
+
+
+-- How is our patients distributed across departemnt_referral 
+SELECT department_referral,
+       COUNT(*) AS TOTAL_PATIENT,
+       ROUND((COUNT(*)/(SELECT COUNT(*) FROM hospital_er.`hospital record`))*100,1) AS PERCENTAGE
+FROM hospital_er.`hospital record`
+GROUP BY department_referral
+ORDER BY TOTAL_PATIENT DESC;
