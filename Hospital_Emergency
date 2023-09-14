@@ -19,14 +19,14 @@ SELECT COUNT(DISTINCT PATIENT_LAST_NAME) AS PATIENT FROM hospital_er.`hospital r
 
 
 -- How many years of data do we have and percentage per year?
-SELECT YEAR(ï»¿date) AS YEAR , 
+SELECT YEAR(date) AS YEAR , 
        COUNT(*) AS COUNT, 
        ROUND((COUNT(*)/(SELECT COUNT(*)FROM hospital_er.`hospital record`)) * 100,1) AS PERCENTAGE
 FROM hospital_er.`hospital record`
 GROUP BY YEAR;
 
 -- What day of the week has the highest number of patient visits?
-SELECT DAYNAME("ï»¿date") AS BUSIEST_WEEK ,
+SELECT DAYNAME(date) AS BUSIEST_WEEK ,
 COUNT(*) AS PATIENT_VISIT
 FROM hospital_er.`hospital record`
 GROUP BY BUSIEST_WEEK
@@ -34,7 +34,7 @@ ORDER BY PATIENT_VISIT desc;
 
 
 -- What time of the day do we have the most patient visits
-SELECT HOUR(ï»¿date) AS hour_of_day, COUNT(*) AS number_of_visits
+SELECT HOUR(time) AS hour_of_day, COUNT(*) AS number_of_visits
 FROM hospital_er.`hospital record`
 GROUP BY hour_of_day
 ORDER BY number_of_visits DESC;
